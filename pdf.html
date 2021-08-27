@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--   <script src="./dist/jspdf.min.js"></script>
+    <script src="./dist/jspdf.debug.js"></script>
+   -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+
+    <!-- vISUALIZAR PDF EN LA PAGINA-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.min.js">
+    </script>
+    <style>
+        body {
+            font-family: system-ui;
+            background: #f06d06;
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="contenido">
+        <h1>👋 Hola desde el Santa Catalina</h1>
+        <input type="Button" onclick="GeneraPdf()" value="Genera pdf de la página actual"></input>
+        <input type="Button" onclick="cargarPdf()" value="Leer pdf y visualizarlo en  página actual"></input>
+    </div>
+    <!-- Ler pdf y visualizarlo en la pagina -->
+    <div id="my_pdf_viewer">
+
+    </div>
+    <div id="canvas_container">
+        <canvas id="pdf_renderer"></canvas>
+    </div>
+    <a href="C:\Users\izquierda\Downloads\sample-file.pdf">Leer Pdf generqado en local</a>
+</body>
+<script>
+    /* import { jsPDF } from "jspdf";*/
+    var doc = new jsPDF();
+
+    doc.text(20, 20, 'Hola mundo');
+    doc.text(20, 30, 'Vamos a generar un pdf desde el lado del cliente');
+
+    // Add new page
+    doc.addPage();
+    doc.text(20, 20, 'Visita programacion.net');
+
+    // Save the PDF
+    alert("Grabar")
+    doc.save('documento.pdf');
+    // Genera pdf con el contenido de la pagina
+    function GeneraPdf() {
+        var doc1 = new jsPDF();
+        var specialElementHandlers = {
+            '#editor': function (element, renderer) {
+                return true;
+            }
+        };
+
+        alert(document.getElementById('contenido').innerHTML);
+        doc1.fromHTML(document.getElementById('contenido').innerHTML, 15, 15, {
+            'width': 170,
+            'elementHandlers': specialElementHandlers
+        });
+        doc1.save('sample-file.pdf');
+
+    }
+
+    // Leer pdf y visualizarlo en la pagiba
+    var myState = {
+        pdf: null,
+        currentPage: 1,
+        zoom: 1
+    }
+    function cargarPdf() {
+       pdfjsLib.getDocument('http://www.informaticasc2.com/Gyncana/manualAyudaGynKanaodt.pdf').then((pdf) => {
+          
+            // more code here
+            myState.pdf = pdf;
+        });
+    }
+    function render() {
+            alert(pdf)
+        myState.pdf.getPage(myState.currentPage).then((page) => {
+
+            var canvas = document.getElementById("pdf_renderer");
+            var ctx = canvas.getContext('2d');
+
+            var viewport = page.getViewport(myState.zoom);
+
+        });
+    }
+</script>
+
+</html>
